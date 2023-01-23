@@ -1,3 +1,6 @@
+/* Copyright (c) 2023 dr. ext (Vladimir Sigalkin) */
+// Based on: https://github.com/aimrebirth/tools
+
 using System;
 using System.IO;
 using System.Runtime.InteropServices;

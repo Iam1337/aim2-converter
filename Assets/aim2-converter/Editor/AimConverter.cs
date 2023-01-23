@@ -1,3 +1,5 @@
+/* Copyright (c) 2023 dr. ext (Vladimir Sigalkin) */
+
 using System;
 using System.Collections.Generic;
 using System.IO;
