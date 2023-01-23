@@ -1,0 +1,24 @@
+{
+  "name": "com.iam1337.aim2-converter",
+  "displayName": "aim2-converter",
+  "version": "1.0.0",
+  "unity": "2020.1",
+  "description": "AIM2 Converter is a tool dedicated to simplify convert visual content from AIM2 to Unity Engine.",
+  "license": "MIT",
+  "author": "dr. ext <ext@iron-wall.org> (https://github.com/iam1337)",
+  "keywords": [
+    "editor",
+    "converter"
+  ],
+  "category": "Graphics",
+  "dependencies": {
+    "com.unity.formats.fbx": "4.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iam1337/aim2-converter.git#upm"
+  },
+  "publishConfig": {
+    "registry": "https://package.openupm.com"
+  }
+}
