@@ -1,3 +1,6 @@
+/* Copyright (c) 2023 dr. ext (Vladimir Sigalkin) */
+// Based on: https://github.com/aimrebirth/tools
+
 using System;
 
 namespace AimConverter
@@ -36,6 +39,7 @@ namespace AimConverter
     {
         None = 0,
         Visual = 1 << 0,
-        Collider = 1 << 1,
+        Collider = 1 << 1, 
+        // WIP
     }
 }
