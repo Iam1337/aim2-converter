@@ -61,7 +61,7 @@ Project supports Unity Package Manager. To install the project as a Git package 
 
 1. In Unity, open **Window > Package Manager**.
 2. Press the **+** button, choose **"Add package from git URL..."**
-3. Enter "https://github.com/iam1337/aim-converter.git#upm" and press Add.
+3. Enter "https://github.com/iam1337/aim2-converter.git#upm" and press Add.
 4. Install package from Package Manager.
 
 ## Usage
