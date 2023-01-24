@@ -66,6 +66,10 @@ Project supports Unity Package Manager. To install the project as a Git package 
 
 ## Usage
 
+**Prepare**
+WIP
+
+**Processors**
 WIP
 
 ## Author Contacts
