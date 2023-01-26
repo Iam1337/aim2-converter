@@ -9,7 +9,9 @@ namespace AimConverter.UI
         private static GUIStyle _consoleItemBackEven;
         private static GUIStyle _consoleItemBackOdd;
         private static GUIStyle _consoleLabel;
-        
+        private static GUIStyle _searchField;
+        private static GUIStyle _searchFieldPlaceholder;
+
         public static GUIStyle ConsoleItemBackEven
 		{
 			get
@@ -45,5 +47,31 @@ namespace AimConverter.UI
 				return _consoleLabel;
 			}
 		}
+        
+        public static GUIStyle SearchField
+        {
+            get
+            {
+                if (_searchField == null) 
+                    _searchField = new GUIStyle("toolbarTextField");
+
+                return _searchField;
+            }
+        }
+
+        public static GUIStyle SearchFieldPlaceholder
+        {
+            get
+            {
+                if (_searchFieldPlaceholder == null)
+                {
+                    _searchFieldPlaceholder = new GUIStyle("toolbarTextField");
+                    _searchFieldPlaceholder.active.textColor = Color.gray;
+                    _searchFieldPlaceholder.normal.textColor = Color.gray;
+                }
+
+                return _searchFieldPlaceholder;
+            }
+        }
     }
 }
