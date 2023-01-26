@@ -33,7 +33,7 @@ namespace AimConverter.UI
         private Vector2 _scrollPosition;
         private string[] _modelsPath = Array.Empty<string>();
         private string _selectedModelPath;
-        private readonly AimFilter _filter = new();
+        private readonly AimFilter _filter = new AimFilter();
         private string _filterPrevious;
         private readonly float _itemHeight = 30f;
         
