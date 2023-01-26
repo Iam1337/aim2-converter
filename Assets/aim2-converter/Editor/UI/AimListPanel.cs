@@ -189,7 +189,7 @@ namespace AimConverter.UI
             var totalModels = !string.IsNullOrWhiteSpace(_sourceModelsDirectory) ? Directory.GetFiles(_sourceModelsDirectory) : Array.Empty<string>();
             if (!string.IsNullOrWhiteSpace(_filter.FilterValue))
             {
-                var filteredModels = totalModels.Where(p => p.Contains(_filter.FilterValue, StringComparison.InvariantCultureIgnoreCase));
+                var filteredModels = totalModels.Where(p => p.IndexOf(_filter.FilterValue, StringComparison.InvariantCultureIgnoreCase) >= 0);
                 _modelsPath = filteredModels.ToArray();
             }
             else
