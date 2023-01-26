@@ -2,6 +2,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -27,24 +28,37 @@ namespace AimConverter.UI
             set => _sourceTextureDirectory = value;
         }
 
-
         private string _sourceModelsDirectory;
         private string _sourceTextureDirectory;
         private Vector2 _scrollPosition;
         private string[] _modelsPath = Array.Empty<string>();
         private string _selectedModelPath;
-
+        private readonly AimFilter _filter = new();
+        private string _filterPrevious;
         private readonly float _itemHeight = 30f;
         
         public AimListPanel(EditorWindow window) : base(window) => RefreshModels();
 
         protected override void DrawContent(Rect contentRect)
         {
+            if (_filter.FilterValue != _filterPrevious)
+            {
+                RefreshModels();
+                _filterPrevious = _filter.FilterValue;
+            }
+            
             using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
             {
                 GUILayout.Label($"Selected: {_selectedModelPath ?? "- none -"}");
+                
+                GUILayout.FlexibleSpace();
+                
+                GUILayout.Space(5f);
+                _filter.Draw();
+                GUILayout.Space(5f);
             }
 
+            GUILayout.Label("Paths:", EditorStyles.boldLabel);
             using (new EditorGUILayout.VerticalScope("box"))
             {
                 using (new EditorGUILayout.HorizontalScope())
@@ -82,11 +96,13 @@ namespace AimConverter.UI
                 GUI.enabled = true;
             }
             
-            GUILayout.Label("Models:");
+            GUILayout.Label("Models:", EditorStyles.boldLabel);
             
             var fieldsRect = GUILayoutUtility.GetLastRect();
             contentRect.y += fieldsRect.y + fieldsRect.height;
             contentRect.height -= fieldsRect.y + fieldsRect.height;
+            
+            GUI.Box(contentRect, GUIContent.none);
 
             var viewRect = new Rect(contentRect);
             viewRect.height = _modelsPath.Length * _itemHeight;
@@ -147,8 +163,7 @@ namespace AimConverter.UI
         {
             using (new GUI.GroupScope(itemRect))
             {
-                var localRect = itemRect;
-                localRect.x = localRect.y = 0;
+                itemRect.x = itemRect.y = 0;
 
                 if (Event.current.type == EventType.Repaint)
                 {
@@ -158,24 +173,32 @@ namespace AimConverter.UI
                         GUI.color = Color.yellow;
 
                     var backStyle = index % 2 != 0 ? AimEditorStyles.ConsoleItemBackEven : AimEditorStyles.ConsoleItemBackOdd;
-                    backStyle.Draw(localRect, false, false, selected, false);
+                    backStyle.Draw(itemRect, false, false, selected, false);
 
                     GUI.color = cacheColor;
                 }
 
-                localRect.x += 10;
-                localRect.width -= localRect.height;
-                GUI.Label(localRect, Path.GetFileName(item).Trim(), AimEditorStyles.ConsoleLabel);
-
+                itemRect.x += 10;
+                itemRect.width -= itemRect.height;
+                GUI.Label(itemRect, Path.GetFileName(item).Trim(), AimEditorStyles.ConsoleLabel);
             }
         }
         
         private void RefreshModels()
         {
-            _modelsPath = !string.IsNullOrWhiteSpace(_sourceModelsDirectory) ? Directory.GetFiles(_sourceModelsDirectory) : Array.Empty<string>();
-            _selectedModelPath = null;
+            var totalModels = !string.IsNullOrWhiteSpace(_sourceModelsDirectory) ? Directory.GetFiles(_sourceModelsDirectory) : Array.Empty<string>();
+            if (!string.IsNullOrWhiteSpace(_filter.FilterValue))
+            {
+                var filteredModels = totalModels.Where(p => p.Contains(_filter.FilterValue, StringComparison.InvariantCultureIgnoreCase));
+                _modelsPath = filteredModels.ToArray();
+            }
+            else
+            {
+                _modelsPath = totalModels;
+            }
 
             OnSelectModel?.Invoke(null, null, null);
         }
+        
     }
 }
