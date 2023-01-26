@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/Iam1337/aim2-converter/compare/v1.0.0...v1.0.1) (2023-01-26)
+
+
+### Bug Fixes
+
+* **converter:** change default processor index to -1 ([cfc6761](https://github.com/Iam1337/aim2-converter/commit/cfc676175b371810502c22f191d94612d056e0bd))
+
 # 1.0.0 (2023-01-23)
 
 
