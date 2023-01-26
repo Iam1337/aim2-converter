@@ -1,3 +1,11 @@
+# [1.1.0](https://github.com/Iam1337/aim2-converter/compare/v1.0.1...v1.1.0) (2023-01-26)
+
+
+### Features
+
+* **converter:** added additional setting and info in submeshes ([057bd0c](https://github.com/Iam1337/aim2-converter/commit/057bd0cd1a584eb48c1ac56345a2653499a661a3))
+* **converter:** added files filter ([ac056b7](https://github.com/Iam1337/aim2-converter/commit/ac056b755dc69a6768b87fa9750ca2efa7369690))
+
 ## [1.0.1](https://github.com/Iam1337/aim2-converter/compare/v1.0.0...v1.0.1) (2023-01-26)
 
 
