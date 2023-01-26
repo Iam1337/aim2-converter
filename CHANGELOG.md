@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/Iam1337/aim2-converter/compare/v1.1.1...v1.1.2) (2023-01-26)
+
+
+### Bug Fixes
+
+* **conveter:** support unity 2019.x ([b3f6a6e](https://github.com/Iam1337/aim2-converter/commit/b3f6a6e7a017fa960ee978997cc37ba43814a689))
+
 ## [1.1.1](https://github.com/Iam1337/aim2-converter/compare/v1.1.0...v1.1.1) (2023-01-26)
 
 
