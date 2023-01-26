@@ -61,8 +61,6 @@ namespace AimConverter.UI
 
         protected override void DrawContent(Rect contentRect)
         {
-            var offset = 0f;
-
             // first panel
             var firstPanelRect = new Rect();
             if (_orientation == SplitOrientation.Horizontal)
