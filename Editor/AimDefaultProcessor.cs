@@ -17,7 +17,7 @@ namespace AimConverter
 
         #region Public Vars
 
-        public int Index => int.MinValue;
+        public int Index => -1;
         
         public string Name => "Default Processor";
 
