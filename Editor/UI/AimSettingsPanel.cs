@@ -22,6 +22,8 @@ namespace AimConverter.UI
         private IAimProcessor[] _processors;
         
         private readonly float _itemHeight = 20f;
+        private readonly float _materialHeight = 200f;
+        private readonly float _importHeight = 100f;
 
         public AimSettingsPanel(EditorWindow window) : base(window) => RefreshProcessors();
 
@@ -38,7 +40,8 @@ namespace AimConverter.UI
         }
         
         protected override void DrawContent(Rect contentRect)
-        {
+        {  
+            GUILayout.Label("Import Settings:", EditorStyles.boldLabel);
             using (new EditorGUILayout.VerticalScope("box"))
             {
                 var currentIndex = Math.Max(Array.IndexOf(_processors, _modelProcessor), 0);
@@ -50,15 +53,39 @@ namespace AimConverter.UI
                     OnRefreshModel?.Invoke(_modelProcessor, _model, _sourceModelsDirectory, _sourceTextureDirectory);
                 }
             }
+            
+            GUILayout.Label("Sub Meshes:", EditorStyles.boldLabel);
+            var fieldsRect = GUILayoutUtility.GetLastRect();
+            contentRect.y += fieldsRect.y + fieldsRect.height;
+            contentRect.height -= fieldsRect.y + fieldsRect.height;
+            
+            // draw import type
+            var importRect = new Rect();
+            importRect.x = contentRect.width - _importHeight - 10f;
+            importRect.y = fieldsRect.y;
+            importRect.height = fieldsRect.height;
+            importRect.width = _importHeight;
+            GUI.Label(importRect, "Import Type", EditorStyles.miniLabel);
+            
+            // draw material type
+            var materialRect = new Rect();
+            materialRect.x = importRect.x - _materialHeight - 5f;
+            materialRect.y = fieldsRect.y;
+            materialRect.width = _materialHeight;
+            materialRect.height = fieldsRect.height;
+            GUI.Label(materialRect, "Material Type", EditorStyles.miniLabel);
+            
+            var texturesRect = new Rect();
+            texturesRect.x = materialRect.x - 15f * 4f - 4f;
+            texturesRect.y = fieldsRect.y;
+            texturesRect.width = 15f * 4f;
+            texturesRect.height = fieldsRect.height;
+            GUI.Label(texturesRect, "Tex. set", EditorStyles.miniLabel);
 
-            GUILayout.Label("Sub Meshes:");
-
+            GUI.Box(contentRect, GUIContent.none);
+            
             if (_model != null)
             {
-                var fieldsRect = GUILayoutUtility.GetLastRect();
-                contentRect.y += fieldsRect.y + fieldsRect.height;
-                contentRect.height -= fieldsRect.y + fieldsRect.height;
-                
                 var subMeshes = _model.SubMeshes;
                 var viewRect = new Rect(contentRect);
                 viewRect.width = contentRect.width;
@@ -107,9 +134,9 @@ namespace AimConverter.UI
         {
             using (new GUI.GroupScope(itemRect))
             {
-                var localRect = itemRect;
-                localRect.x = localRect.y = 0;
+                itemRect.x = itemRect.y = 0;
 
+                // draw background
                 if (Event.current.type == EventType.Repaint)
                 {
                     var cacheColor = GUI.color;
@@ -118,28 +145,65 @@ namespace AimConverter.UI
                         GUI.color = Color.yellow;
 
                     var backStyle = index % 2 != 0 ? AimEditorStyles.ConsoleItemBackEven : AimEditorStyles.ConsoleItemBackOdd;
-                    backStyle.Draw(localRect, false, false, selected, false);
+                    backStyle.Draw(itemRect, false, false, selected, false);
 
                     GUI.color = cacheColor;
                 }
 
-                localRect.x += 10;
-                localRect.width -= localRect.height;
-                GUI.Label(localRect, subMesh.NicifyName, AimEditorStyles.ConsoleLabel);
+                // draw name
+                var labelRect = new Rect();
+                labelRect.x = 10f;
+                labelRect.width = itemRect.width - labelRect.x;
+                labelRect.height = itemRect.height;
+                GUI.Label(labelRect, subMesh.NicifyName, AimEditorStyles.ConsoleLabel);
                 
-                localRect.width = 300;
-                localRect.x = itemRect.width - localRect.width;
-                var importType = (ImportType)EditorGUI.EnumFlagsField(localRect, subMesh.ImportType);
+                // draw import type
+                var importRect = new Rect();
+                importRect.x = itemRect.width - _importHeight - 10f;
+                importRect.width = _importHeight;
+                importRect.height = itemRect.height;
+                var importType = (ImportType)EditorGUI.EnumFlagsField(importRect, subMesh.ImportType);
                 if (importType != subMesh.ImportType)
                 {
                     subMesh.ImportType = importType;
-
                     OnRefreshModel?.Invoke(_modelProcessor, _model, _sourceModelsDirectory, _sourceTextureDirectory);
+                    Repaint();
                 }
+                
+                // draw material type
+                var materialRect = new Rect();
+                materialRect.x = importRect.x - _materialHeight - 5f;
+                materialRect.width = _materialHeight;
+                materialRect.height = itemRect.height;
+                var materialType = (MaterialType)EditorGUI.EnumPopup(materialRect, subMesh.MaterialType);
+                if (materialType != subMesh.MaterialType)
+                {
+                    subMesh.MaterialType = materialType;
+                    OnRefreshModel?.Invoke(_modelProcessor, _model, _sourceModelsDirectory, _sourceTextureDirectory);
+                    Repaint();
+                }
+                
+                // draw textures
+                var texturesRect = new Rect();
+                texturesRect.x = materialRect.x - 15f * 4f - 4f;
+                texturesRect.width = 14f;
+                texturesRect.height = itemRect.height;
+                GUI.Toggle(texturesRect, IsTextureAvailable(subMesh.AlbedoName), new GUIContent(string.Empty, subMesh.AlbedoName));
+                texturesRect.x += 15f;
+                GUI.Toggle(texturesRect, IsTextureAvailable(subMesh.SpecularName), new GUIContent(string.Empty, subMesh.SpecularName));
+                texturesRect.x += 15f;
+                GUI.Toggle(texturesRect, IsTextureAvailable(subMesh.Unknown3Name), new GUIContent(string.Empty, subMesh.Unknown3Name));
+                texturesRect.x += 15f;
+                GUI.Toggle(texturesRect, IsTextureAvailable(subMesh.Unknown4Name), new GUIContent(string.Empty, subMesh.Unknown4Name));
             }
         }
 
-        protected void RefreshProcessors()
+        private bool IsTextureAvailable(string textureName)
+        {
+            return !string.IsNullOrWhiteSpace(textureName) && textureName != "_DEFAULT_";
+        }
+
+        private void RefreshProcessors()
         {
             try
             {
