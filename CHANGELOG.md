@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/Iam1337/aim2-converter/compare/v1.1.2...v1.1.3) (2023-07-10)
+
+
+### Bug Fixes
+
+* **converter:** changed base disk ([f260973](https://github.com/Iam1337/aim2-converter/commit/f260973dc87149e6e253c5451cea1769bc470ace))
+
 ## [1.1.2](https://github.com/Iam1337/aim2-converter/compare/v1.1.1...v1.1.2) (2023-01-26)
 
 
