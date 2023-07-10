@@ -26,8 +26,8 @@ namespace AimConverter.UI
         protected void OnEnable()
         {
             _listPanel = new AimListPanel(this);
-            _listPanel.SourceModelsDirectory = EditorPrefs.GetString(SourceModelsDirectoryKey, "E:\\");
-            _listPanel.SourceTextureDirectory = EditorPrefs.GetString(SourceTextureDirectoryKey, "E:\\");
+            _listPanel.SourceModelsDirectory = EditorPrefs.GetString(SourceModelsDirectoryKey, "C:\\");
+            _listPanel.SourceTextureDirectory = EditorPrefs.GetString(SourceTextureDirectoryKey, "C:\\");
             
             _previewPanel = new AimPreviewPanel(this);
             _settingsPanel = new AimSettingsPanel(this);
