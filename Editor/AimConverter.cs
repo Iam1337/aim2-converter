@@ -198,7 +198,6 @@ namespace AimConverter
 
         private static void SetupMaterials(IAimProcessor processor, AimModel model, GameObject modelObject, string modelDirectory, string sourceTextureDirectory, Dictionary<AimSubMesh, string> modelDictionary, bool dumpAsset)
         {
-            var index = 0;
             foreach (var pair in modelDictionary)
             {
                 var subMesh = pair.Key;
