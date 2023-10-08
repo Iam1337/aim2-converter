@@ -168,7 +168,6 @@ namespace AimConverter
         {
             var texture = new Texture2D(_width, _height, TextureFormat.RGBA32, true);
             texture.SetPixels32(GetPixelsDX5());
-            texture.Apply();
 
             return texture;
         }

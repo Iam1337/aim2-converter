@@ -20,6 +20,8 @@ namespace AimConverter
         public int Index => -1;
         public string Name => "Default Processor";
         public float ModelScale => 0.0254f;
+        public bool UseBumpMap => false;
+        public float BumpMapStrength => 0;
 
         #endregion
 
@@ -44,7 +46,9 @@ namespace AimConverter
         public void ProcessPrefabSubMesh(GameObject prefabObject, GameObject modelObject, AimSubMesh subMesh, GameObject subMeshObject)
         { }
 
-        public Material CreateMaterial(MaterialType materialType, Texture2D albedoTexture, Color albedoColor, Texture2D specularTexture, Color specularColor, Texture2D unknown3Texture, Texture2D unknown4Texture)
+        public Material CreateMaterial(MaterialType materialType, Texture2D albedoTexture, Color albedoColor,
+            Texture2D specularTexture, Color specularColor, Texture2D unknown3Texture, Texture2D unknown4Texture,
+            Texture2D normalTexture)
         {
             var material = (Material)null;
             

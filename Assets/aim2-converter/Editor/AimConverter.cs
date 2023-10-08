@@ -234,11 +234,19 @@ namespace AimConverter
             var unknown3Texture = CreateTexture(subMesh.Unknown3Name, $"{subMeshName}_UNK3", modelDirectory, sourceTextureDirectory, dumpAsset);
             var unknown4Texture = CreateTexture(subMesh.Unknown4Name, $"{subMeshName}_UNK4", modelDirectory, sourceTextureDirectory, dumpAsset);
 
+            var normalTexture = (Texture2D)null;
+            if (processor.UseBumpMap)
+            {
+                normalTexture = CreateNormalTexture(subMesh.AlbedoName, $"{subMeshName}_BUMP", modelDirectory, sourceTextureDirectory,
+                    processor.BumpMapStrength, dumpAsset);
+            }
+
             var material = processor.CreateMaterial(subMesh.MaterialType,
                                                      albedoTexture, albedoColor,
                                                      specularTexture, specularColor,
                                                      unknown3Texture,
-                                                     unknown4Texture);
+                                                     unknown4Texture, 
+                                                     normalTexture);
 
             if (material != null && dumpAsset)
                 AssetDatabase.CreateAsset(material, Path.Combine(modelDirectory, $"MAT_{subMeshName}.mat"));
@@ -259,6 +267,7 @@ namespace AimConverter
             textureRaw.LoadData(reader);
 
             var tempTexture = textureRaw.BuildTexture();
+            tempTexture.Apply();
 
             if (save)
             {
@@ -270,6 +279,53 @@ namespace AimConverter
             }
 
             return tempTexture;
+        }
+        
+        private static Texture2D CreateNormalTexture(string textureName, string assetName, string modelDirectory, string sourceTextureDirectory, float strength, bool save)
+        {
+            var albedoPath = Path.Combine(sourceTextureDirectory, textureName) + ".TM";
+            if (!File.Exists(albedoPath))
+                return null;
+
+            using var stream = new FileStream(albedoPath, FileMode.Open);
+            using var reader = new BinaryReader(stream);
+
+            var textureRaw = new AimTexture(Path.GetFileNameWithoutExtension(albedoPath));
+            textureRaw.LoadData(reader);
+            
+            var sourceTexture = textureRaw.BuildTexture();
+            var normalTexture = new Texture2D (sourceTexture.width, sourceTexture.height, TextureFormat.ARGB32, true);
+            
+            strength = Mathf.Clamp(strength,0.0F,1.0F);
+            
+            // https://gamedev.stackexchange.com/questions/106703/create-a-normal-map-using-a-script-unity
+            for (var y=0; y<normalTexture.height; y++) 
+            {
+                for (var x=0; x<normalTexture.width; x++) 
+                {
+                    var xLeft = sourceTexture.GetPixel(x-1,y).grayscale*strength;
+                    var xRight = sourceTexture.GetPixel(x+1,y).grayscale*strength;
+                    var yUp = sourceTexture.GetPixel(x,y-1).grayscale*strength;
+                    var yDown = sourceTexture.GetPixel(x,y+1).grayscale*strength;
+                    var xDelta = ((xLeft-xRight)+1)*0.5f;
+                    var yDelta = ((yUp-yDown)+1)*0.5f;
+                    normalTexture.SetPixel(x,y,new Color(xDelta,yDelta,1.0f,yDelta));
+                }
+            }
+            
+            Object.DestroyImmediate(sourceTexture);
+            normalTexture.Apply();
+            
+            if (save)
+            {
+                var tempPath = Path.Combine(modelDirectory, $"TEX_{assetName}.png");
+
+                File.WriteAllBytes(tempPath, normalTexture.EncodeToPNG());
+                AssetDatabase.ImportAsset(tempPath, ImportAssetOptions.Default);
+                return AssetDatabase.LoadAssetAtPath<Texture2D>(tempPath);
+            }
+            
+            return normalTexture;
         }
     }
 }
