@@ -1,7 +1,7 @@
 {
   "name": "com.iam1337.aim2-converter",
   "displayName": "aim2-converter",
-  "version": "1.1.3",
+  "version": "1.2.0",
   "unity": "2020.1",
   "description": "AIM2 Converter is a tool dedicated to simplify convert visual content from AIM2 to Unity Engine.",
   "license": "MIT",
