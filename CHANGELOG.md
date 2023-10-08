@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/Iam1337/aim2-converter/compare/v1.1.3...v1.2.0) (2023-10-08)
+
+
+### Features
+
+* added model scale ([c9ae7d1](https://github.com/Iam1337/aim2-converter/commit/c9ae7d188c3cbe65f70e62ee6eb650e46e96aa8c))
+
 ## [1.1.3](https://github.com/Iam1337/aim2-converter/compare/v1.1.2...v1.1.3) (2023-07-10)
 
 
