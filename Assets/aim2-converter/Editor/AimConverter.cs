@@ -55,7 +55,7 @@ namespace AimConverter
                 var modelDirectory = CreateDirectory(targetContentDirectory, model.Name);
                 var modelDictionary = new Dictionary<AimSubMesh, string>();
                 
-                modelObject = CreateModel(model, modelDirectory, modelDictionary, true);
+                modelObject = CreateModel(model, modelDirectory, processor.ModelScale, modelDictionary, true);
                 SetupMaterials(processor, model, modelObject, modelDirectory, sourceTextureDirectory, modelDictionary, true);
                 
                 prefabObject = CreatePrefab(processor, model, modelObject, modelDictionary);
@@ -87,7 +87,7 @@ namespace AimConverter
             {
                 var modelDictionary = new Dictionary<AimSubMesh, string>();
                 
-                modelObject = CreateModel(model, null, modelDictionary, false);
+                modelObject = CreateModel(model, null, processor.ModelScale, modelDictionary, false);
                 SetupMaterials(processor, model, modelObject, null, sourceTextureDirectory, modelDictionary, false);
             }
             catch (Exception exception)
@@ -115,7 +115,7 @@ namespace AimConverter
             return path;
         }
         
-        private static GameObject CreateModel(AimModel model, string modelDirectory, IDictionary<AimSubMesh, string> modelDictionary, bool dumpAsset)
+        private static GameObject CreateModel(AimModel model, string modelDirectory, float modelScale, IDictionary<AimSubMesh, string> modelDictionary, bool dumpAsset)
         {
             var modelObject = new GameObject(model.Name);
             modelObject.transform.localPosition = Vector3.zero;
@@ -139,7 +139,7 @@ namespace AimConverter
                 try
                 {
                     var subMeshFilter = subMeshObject.AddComponent<MeshFilter>();
-                    subMeshFilter.mesh = subMesh.BuildMesh(0.0254f);
+                    subMeshFilter.mesh = subMesh.BuildMesh(modelScale);
 
                     var material = new Material(Shader.Find("Standard"));
                     material.name = subMeshName;
