@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/Iam1337/aim2-converter/compare/v1.2.0...v1.2.1) (2023-10-08)
+
+
+### Bug Fixes
+
+* experimental bumpmap ([92b80ec](https://github.com/Iam1337/aim2-converter/commit/92b80ec386f2c8f3e71096a57cfc29b27e02ba60))
+
 # [1.2.0](https://github.com/Iam1337/aim2-converter/compare/v1.1.3...v1.2.0) (2023-10-08)
 
 
