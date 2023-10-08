@@ -18,8 +18,8 @@ namespace AimConverter
         #region Public Vars
 
         public int Index => -1;
-        
         public string Name => "Default Processor";
+        public float ModelScale => 0.0254f;
 
         #endregion
 
